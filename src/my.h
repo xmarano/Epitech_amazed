@@ -4,16 +4,19 @@
 ** File description:
 ** my.h
 */
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <errno.h>
+
 #ifndef MY_H
     #define MY_H
+    #include <unistd.h>
+    #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
+    #include <stdarg.h>
+    #include <signal.h>
+    #include <sys/stat.h>
+    #include <stdbool.h>
+    #include <errno.h>
+char *my_strrchr(const char *s, int c);
 int my_put_nbr(int nb);
 int my_atoi(char *str);
 char my_putchar(char c);

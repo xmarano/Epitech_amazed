@@ -18,6 +18,7 @@ SRCLIB	=	lib/my_atoi.c 		\
 			lib/my_strlen.c 	\
 			lib/my_strncpy.c 	\
 			lib/str_to_word_array.c 	\
+			lib/my_strrchr.c	\
 
 SRCNAME	=	src/main.c				\
 
