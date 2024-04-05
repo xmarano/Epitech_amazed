@@ -1,0 +1,17 @@
+./Makefile:51: illegal token in column 21, giving up (hint: fix the file or remove it from the working set)
+./src/main.c:54: MAJOR:C-L1
+./src/print_file.c:30: MAJOR:C-F3
+./src/print_file.c:39: MAJOR:C-C1
+./src/print_file.c:44: MAJOR:C-C1
+./src/print_file.c:45: MAJOR:C-C1
+./src/print_file.c:51: MAJOR:C-C1
+./src/print_file.c:52: MAJOR:C-F4
+./src/print_file.c:53: MAJOR:C-F4
+./src/print_file.c:54: MAJOR:C-F4
+./src/print_file.c:55: MAJOR:C-F4
+./src/print_file.c:56: MAJOR:C-F4
+./src/print_file.c:74: MAJOR:C-C1
+./src/print_file.c:78: MINOR:C-F8
+./src/print_file.c:81: MAJOR:C-F4
+./src/print_file.c:82: MAJOR:C-F4
+./src/print_file.c:83: MAJOR:C-F4

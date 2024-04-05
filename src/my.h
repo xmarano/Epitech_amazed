@@ -16,6 +16,8 @@
     #include <sys/stat.h>
     #include <stdbool.h>
     #include <errno.h>
+char *my_strchr(const char *s, int c);
+char *my_strstr(char *source, char *search);
 char *my_strrchr(const char *s, int c);
 int my_put_nbr(int nb);
 int my_atoi(char *str);

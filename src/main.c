@@ -41,40 +41,40 @@ int get_num_rooms(char *line, S_t *s)
         first_line = 0;
         return nb_rooms;
     }
-    if (!strrchr(line, '#') && !strrchr(line, '-')) {
+    if (!my_strrchr(line, '#') && !my_strrchr(line, '-')) {
         nb_rooms ++;
     }
     return nb_rooms;
 }
 
-int parse_file(S_t *s, char **argv)
+int parse_file(S_t *s, char **lines)
 {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read = getline(&line, &len, stdin);
+    int i = 0;
 
-    s->nb_robots = my_atoi(line);
+    s->nb_robots = my_atoi(lines[i++]);
     s->tab = malloc(sizeof(int *) * 100);
-    for (int i = 0; i < 100; i ++) {
-        s->tab[i] = malloc(sizeof(int) * 100);
-        for (int j = 0; j < 100; j++)
-            s->tab[i][j] = 0;
+    for (int j = 0; j < 100; j ++) {
+        s->tab[j] = malloc(sizeof(int) * 100);
+        for (int k = 0; k < 100; k++)
+            s->tab[j][k] = 0;
     }
-    while (read != -1) {
-        if (my_strrchr(line, '-'))
-            fill_matrix(s, line);
+    while (lines[i] != NULL) {
+        if (my_strchr(lines[i], '-'))
+            fill_matrix(s, lines[i]);
         else
-            s->nb_rooms = get_num_rooms(line, s);
-        read = getline(&line, &len, stdin);
+            s->nb_rooms = get_num_rooms(lines[i], s);
+        i++;
     }
-    free(line);
+    printf("%d\n", s->nb_robots);
     return 0;
 }
 
 int main(int argc, char **argv)
 {
     S_t s;
+    char **lines = read_file_to_array();
 
-    parse_file(&s, argv);
+    parse_file(&s, lines);
+    display_file(lines);
     return 0;
 }

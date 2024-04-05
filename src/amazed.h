@@ -23,4 +23,6 @@ typedef struct {
     int room2_index;
 } LineProcessing;
 
+char **read_file_to_array(void);
+void display_file(char **lines);
 #endif
