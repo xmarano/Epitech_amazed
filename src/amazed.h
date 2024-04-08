@@ -23,6 +23,8 @@ typedef struct {
     int room2_index;
 } LineProcessing;
 
-char **read_file_to_array(void);
-void display_file(char **lines);
+void fill_matrix(S_t *s, char *line);
+int get_num_rooms(char *line, S_t *s);
+void display_comments(char **lines, int *i, int *rooms_printed,
+    int *tunnels_printed);
 #endif

@@ -17,6 +17,8 @@ int my_atoi(char *str)
         i++;
     }
     while (str[i] != '\0') {
+        if (str[i] < '0' || str[i] > '9')
+            break;
         result = result * 10 + str[i] - '0';
         i++;
     }

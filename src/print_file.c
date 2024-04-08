@@ -8,25 +8,6 @@
 #include "amazed.h"
 #include "my.h"
 
-char **read_file_to_array(void)
-{
-    char **lines = malloc(sizeof(char *) * 100);
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read = getline(&line, &len, stdin);
-    int i = 0;
-
-    while (read != -1) {
-        lines[i] = malloc(sizeof(char) * (my_strlen(line) + 1));
-        my_strcpy(lines[i], line);
-        i++;
-        read = getline(&line, &len, stdin);
-    }
-    free(line);
-    lines[i] = NULL;
-    return lines;
-}
-
 void display_comments(char **lines, int *i, int *rooms_printed,
     int *tunnels_printed)
 {
@@ -57,29 +38,41 @@ void display_comments(char **lines, int *i, int *rooms_printed,
     }
 }
 
-void display_file(char **lines)
+void process_line(char *line, LineProcessing *lp)
 {
-    int i = 0;
-    int rooms_printed = 0;
-    int tunnels_printed = 0;
-
-    my_printf("#number_of_robots\n");
-    my_printf("%s", lines[i++]);
-    while (lines[i] != NULL) {
-        if (lines[i][0] == '#' && my_strstr(lines[i], "##start") == NULL &&
-            my_strstr(lines[i], "##end") == NULL) {
-            i++;
-            continue;
-        }
-        if (my_strchr(lines[i], '#') != NULL) {
-            for (int j = 0; lines[i][j] != '#'; j++) {
-                my_printf("%c", lines[i][j]);
-            }
-            my_printf("\n");
-            /*i ++;
-            continue;*/
-        }
-        display_comments(lines, &i, &rooms_printed, &tunnels_printed);
-        i++;
+    if (line[lp->index] == '-') {
+        lp->is_second = 1;
+    } else if (lp->is_second == 0) {
+        lp->room1[lp->room1_index] = line[lp->index];
+        (lp->room1_index)++;
+    } else {
+        lp->room2[lp->room2_index] = line[lp->index];
+        (lp->room2_index)++;
     }
+}
+
+void fill_matrix(S_t *s, char *line)
+{
+    LineProcessing lp = {{0}, {0}, 0, 0, 0, 0};
+
+    while (line[lp.index] != '\n' && line[lp.index] != '\0') {
+        process_line(line, &lp);
+        lp.index++;
+    }
+    s->tab[my_atoi(lp.room1)][my_atoi(lp.room2)] = 1;
+    s->tab[my_atoi(lp.room2)][my_atoi(lp.room1)] = 1;
+}
+
+int get_num_rooms(char *line, S_t *s)
+{
+    static int nb_rooms = 0;
+    static int first_line = 1;
+
+    if (first_line) {
+        first_line = 0;
+        return nb_rooms;
+    }
+    if (!my_strrchr(line, '#') && !my_strrchr(line, '-'))
+        nb_rooms ++;
+    return nb_rooms;
 }
