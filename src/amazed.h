@@ -33,4 +33,7 @@ void fill_matrix(S_t *s, char *line);
 int get_num_rooms(char *line, S_t *s);
 void display_comments(char **lines, int *i, int *rooms_printed,
     int *tunnels_printed);
+void display_rooms(char **lines, int *i, int *rooms);
+void display_tunnels(char **lines, int *i, int *tunnels);
+void display_comments(char **lines, int *i, int *rooms, int *tunnels);
 #endif
