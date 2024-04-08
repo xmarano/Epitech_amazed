@@ -8,36 +8,6 @@
 #include "amazed.h"
 #include "my.h"
 
-void display_comments(char **lines, int *i, int *rooms_printed,
-    int *tunnels_printed)
-{
-    if (my_strstr(lines[*i], "##start") != NULL) {
-        if (*rooms_printed == 0) {
-            my_printf("#rooms\n");
-            *rooms_printed = 1;
-        }
-        my_printf("##start\n");
-    } else if (my_strstr(lines[*i], "##end") != NULL) {
-        if (*rooms_printed == 0) {
-            my_printf("#rooms\n");
-            *rooms_printed = 1;
-        }
-        my_printf("##end\n");
-    } else if (my_strchr(lines[*i], '-') != NULL) {
-        if (*tunnels_printed == 0) {
-            my_printf("#tunnels\n");
-            *tunnels_printed = 1;
-        }
-        my_printf("%s", lines[*i]);
-    } else {
-        if (*rooms_printed == 0) {
-            my_printf("#rooms\n");
-            *rooms_printed = 1;
-        }
-        my_printf("%s", lines[*i]);
-    }
-}
-
 void process_line(char *line, LineProcessing *lp)
 {
     if (line[lp->index] == '-') {
