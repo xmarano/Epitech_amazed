@@ -107,10 +107,5 @@ int main(int argc, char **argv)
         return 84;
     parse_file(&s, lines);
     display_file(lines);
-    my_printf("\x1b[38;5;208m" "%d\n" "\x1b[0m", s.nb_robots);
-    my_printf("\x1b[38;5;208m" "%d\n" "\x1b[0m", s.nb_rooms);
-    my_printf("\x1b[38;5;208m" "s:%d\n" "\x1b[0m", pars.start);
-    my_printf("\x1b[38;5;208m" "e:%d\n" "\x1b[0m", pars.end);
-    my_printf("\x1b[38;5;208m" "r:%d\n" "\x1b[0m", pars.room);
     return 0;
 }
