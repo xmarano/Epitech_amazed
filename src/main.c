@@ -7,7 +7,7 @@
 #include "amazed.h"
 #include "my.h"
 
-static void display_file(char **lines)
+void display_file(char **lines)
 {
     int i = 0;
     int rooms_printed = 0;
@@ -31,7 +31,7 @@ static void display_file(char **lines)
     }
 }
 
-static int parse_file(S_t *s, char **lines)
+int parse_file(S_t *s, char **lines)
 {
     int i = 0;
 
@@ -53,7 +53,7 @@ static int parse_file(S_t *s, char **lines)
     return 0;
 }
 
-static char **read_file_to_array(void)
+char **read_file_to_array(void)
 {
     char **lines = malloc(sizeof(char *) * 100);
     char *line = NULL;
@@ -72,12 +72,45 @@ static char **read_file_to_array(void)
     return lines;
 }
 
+static void init_struct(pars_t *pars)
+{
+    pars->start = 0;
+    pars->end = 0;
+    pars->room = 0;
+}
+
+int parsing_error(pars_t *pars, char **lines)
+{
+    init_struct(pars);
+    for (int i = 0; lines[0][i] != '\0'; i++) {
+        if (lines[0][i] < 0)
+            return 84;
+    }
+    for (int i = 0; lines[i] != NULL; i++) {
+        if (my_strcmp("##start\n", lines[i]) == 0)
+            pars->start++;
+        if (my_strcmp("##end\n", lines[i]) == 0)
+            pars->end++;
+    }
+    if (pars->start != 1 || pars->end != 1)
+        return 84;
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
     S_t s;
+    pars_t pars;
     char **lines = read_file_to_array();
 
+    if (parsing_error(&pars, lines) == 84)
+        return 84;
     parse_file(&s, lines);
     display_file(lines);
+    my_printf("\x1b[38;5;208m" "%d\n" "\x1b[0m", s.nb_robots);
+    my_printf("\x1b[38;5;208m" "%d\n" "\x1b[0m", s.nb_rooms);
+    my_printf("\x1b[38;5;208m" "s:%d\n" "\x1b[0m", pars.start);
+    my_printf("\x1b[38;5;208m" "e:%d\n" "\x1b[0m", pars.end);
+    my_printf("\x1b[38;5;208m" "r:%d\n" "\x1b[0m", pars.room);
     return 0;
 }

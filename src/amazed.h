@@ -14,6 +14,12 @@ typedef struct S {
     int **tab;
 } S_t;
 
+typedef struct pars {
+    int start;
+    int end;
+    int room;
+} pars_t;
+
 typedef struct {
     char room1[100];
     char room2[100];
