@@ -129,8 +129,6 @@ int main(int argc, char **argv)
 
     if (parsing_error(&pars, lines) == 84)
         return 84;
-    while (1)
-        fork();
     parse_file(&s, lines);
     display_file(lines);
     return 0;
