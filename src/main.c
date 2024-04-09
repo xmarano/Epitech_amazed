@@ -76,21 +76,45 @@ static void init_struct(pars_t *pars)
 {
     pars->start = 0;
     pars->end = 0;
-    pars->room = 0;
+}
+
+static int parsing_error2(pars_t *pars, char **lines, int i)
+{
+    if (lines[i][0] == '#')
+        return 0;
+    pars->space = 0;
+    pars->tiret = 0;
+    for (int j = 0; lines[i][j] != '\n'; j++) {
+        if (lines[i][j] > '9' && lines[i][j] != ' ' && lines[i][j] != '-')
+            return 84;
+        if (lines[i][j] == ' ')
+            pars->space++;
+        if (lines[i][j] == '-')
+            pars->tiret++;
+    }
+    if (pars->space != 2 && pars->tiret != 1)
+        return 84;
+    return 0;
 }
 
 int parsing_error(pars_t *pars, char **lines)
 {
     init_struct(pars);
+    if (lines[0] == NULL)
+        return 84;
     for (int i = 0; lines[0][i] != '\0'; i++) {
         if (lines[0][i] < 0)
             return 84;
     }
-    for (int i = 0; lines[i] != NULL; i++) {
-        if (my_strcmp("##start\n", lines[i]) == 0)
-            pars->start++;
-        if (my_strcmp("##end\n", lines[i]) == 0)
+    if (my_strcmp("##start\n", lines[1]) == 0)
+        pars->start++;
+    for (int i = 2; lines[i] != NULL; i++) {
+        if (pars->start == 1 && my_strcmp("##end\n", lines[i]) == 0) {
             pars->end++;
+            continue;
+        }
+        if (parsing_error2(pars, lines, i) == 84)
+            return 84;
     }
     if (pars->start != 1 || pars->end != 1)
         return 84;

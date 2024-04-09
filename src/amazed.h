@@ -17,7 +17,8 @@ typedef struct S {
 typedef struct pars {
     int start;
     int end;
-    int room;
+    int space;
+    int tiret;
 } pars_t;
 
 typedef struct {
