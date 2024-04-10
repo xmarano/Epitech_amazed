@@ -16,6 +16,15 @@ void display_robots(S_t *s, pars_t *pars)
     }
 }
 
+void display_numbers(char **lines, S_t *s)
+{
+    for (int i = 0; lines[s->current_line][i] != '\n'; i++) {
+        if (lines[s->current_line][i] == '#')
+            return;
+        my_printf("%c", lines[s->current_line][i]);
+    }
+}
+
 void display_rooms(char **lines, S_t *s)
 {
     if (my_strchr(lines[s->current_line], '-') != NULL)
@@ -34,7 +43,9 @@ void display_rooms(char **lines, S_t *s)
         s->end = 1;
         return;
     }
-    my_printf("%s", lines[s->current_line]);
+    display_numbers(lines, s);
+    if (lines[s->current_line][0] != '#')
+        my_printf("\n");
 }
 
 void display_tunnels(char **lines, S_t *s)
