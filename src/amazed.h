@@ -20,6 +20,7 @@ typedef struct pars {
     int space;
     int tiret;
     int error;
+    int err_nb_robot;
 } pars_t;
 
 typedef struct {
