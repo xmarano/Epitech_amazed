@@ -7,6 +7,14 @@
 #include "amazed.h"
 #include "my.h"
 
+static void check_comment(char **lines, int i)
+{
+    if (my_strchr(lines[i], '#') != NULL) {
+        for (int j = 0; lines[i][j] != '#'; j++)
+            my_printf("%c", lines[i][j]);
+    }
+}
+
 void display_file(S_t *s, pars_t *pars, char **lines)
 {
     int i = 0;
@@ -24,10 +32,7 @@ void display_file(S_t *s, pars_t *pars, char **lines)
             i++;
             continue;
         }
-        if (my_strchr(lines[i], '#') != NULL) {
-            for (int j = 0; lines[i][j] != '#'; j++)
-                my_printf("%c", lines[i][j]);
-        }
+        check_comment(lines, i);
         display_comments(lines, &i, &rooms_printed, &tunnels_printed);
         i++;
     }
