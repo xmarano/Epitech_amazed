@@ -76,6 +76,7 @@ static void init_struct(pars_t *pars)
 {
     pars->start = 0;
     pars->end = 0;
+    pars->error = 0;
 }
 
 static int parsing_error2(pars_t *pars, char **lines, int i)
@@ -88,22 +89,24 @@ static int parsing_error2(pars_t *pars, char **lines, int i)
     pars->tiret = 0;
     for (int j = 0; lines[i][j] != '\n'; j++) {
         if (lines[i][j] > '9' && lines[i][j] != ' ' && lines[i][j] != '-')
-            return 84;
+            pars->error++;
         if (lines[i][j] == ' ')
             pars->space++;
         if (lines[i][j] == '-')
             pars->tiret++;
     }
     if (pars->space != 2 && pars->tiret != 1)
-        return 84;
+        pars->error++;
     return 0;
 }
 
 int parsing_error(pars_t *pars, char **lines)
 {
     init_struct(pars);
-    if (lines[0] == NULL)
-        return 84;
+    if (lines[0] == NULL) {
+        pars->error++;
+        return 0;
+    }
     for (int i = 1; lines[i] != NULL; i++) {
         if (my_strcmp("##start\n", lines[i]) == 0) {
             pars->start++;
@@ -113,11 +116,10 @@ int parsing_error(pars_t *pars, char **lines)
             pars->end++;
             continue;
         }
-        if (parsing_error2(pars, lines, i) == 84)
-            return 84;
+        parsing_error2(pars, lines, i);
     }
     if (pars->start != 1 || pars->end != 1)
-        return 84;
+        pars->error++;
     return 0;
 }
 
@@ -127,9 +129,10 @@ int main(int argc, char **argv)
     pars_t pars;
     char **lines = read_file_to_array();
 
-    if (parsing_error(&pars, lines) == 84)
-        return 84;
+    parsing_error(&pars, lines);
     parse_file(&s, lines);
     display_file(lines);
+    if (pars.error != 0)
+        return 84;
     return 0;
 }
