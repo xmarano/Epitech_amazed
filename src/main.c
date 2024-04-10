@@ -7,34 +7,13 @@
 #include "amazed.h"
 #include "my.h"
 
-static void check_comment(char **lines, int i)
-{
-    if (my_strchr(lines[i], '#') != NULL) {
-        for (int j = 0; lines[i][j] != '#'; j++)
-            my_printf("%c", lines[i][j]);
-    }
-}
-
 void display_file(S_t *s, pars_t *pars, char **lines)
 {
-    int i = 0;
-    int rooms_printed = 0;
-    int tunnels_printed = 0;
-
-    my_printf("#number_of_robots\n");
-    if (pars->err_nb_robot == 0) {
-        my_printf("%d\n", s->nb_robots);
-        i = 1;
-    }
-    while (lines[i] != NULL) {
-        if (lines[i][0] == '#' && my_strstr(lines[i], "##start") == NULL &&
-            my_strstr(lines[i], "##end") == NULL) {
-            i++;
-            continue;
-        }
-        check_comment(lines, i);
-        display_comments(lines, &i, &rooms_printed, &tunnels_printed);
-        i++;
+    display_robots(s, pars);
+    while (lines[s->current_line] != NULL) {
+        display_rooms(lines, s);
+        display_tunnels(lines, s);
+        s->current_line++;
     }
 }
 
@@ -79,8 +58,13 @@ char **read_file_to_array(void)
     return lines;
 }
 
-static void init_struct(pars_t *pars)
+static void init_struct(pars_t *pars, S_t *s)
 {
+    s->tunnel = 0;
+    s->room = 0;
+    s->start = 0;
+    s->end = 0;
+    s->current_line = 0;
     pars->start = 0;
     pars->end = 0;
     pars->error = 0;
@@ -110,7 +94,6 @@ static int parsing_error2(pars_t *pars, char **lines, int i)
 
 int parsing_error(pars_t *pars, char **lines)
 {
-    init_struct(pars);
     if (lines[0] == NULL) {
         pars->error++;
         return 0;
@@ -141,10 +124,11 @@ int main(int argc, char **argv)
     pars_t pars;
     char **lines = read_file_to_array();
 
+    init_struct(&pars, &s);
     parsing_error(&pars, lines);
     parsing_file(&s, lines);
     display_file(&s, &pars, lines);
-    if (pars.error != 0)
+    if (pars.error + pars.err_nb_robot != 0)
         return 84;
     return 0;
 }

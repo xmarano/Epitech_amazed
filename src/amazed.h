@@ -9,6 +9,11 @@
     #define AMAZED_H
 
 typedef struct S {
+    int tunnel;
+    int room;
+    int start;
+    int end;
+    int current_line;
     int nb_rooms;
     int nb_robots;
     int **tab;
@@ -32,11 +37,9 @@ typedef struct {
     int room2_index;
 } LineProcessing_t;
 
+void display_robots(S_t *s, pars_t *pars);
+void display_tunnels(char **lines, S_t *s);
+void display_rooms(char **lines, S_t *s);
 void fill_matrix(S_t *s, char *line);
 int get_num_rooms(char *line, S_t *s);
-void display_comments(char **lines, int *i, int *rooms_printed,
-    int *tunnels_printed);
-void display_rooms(char **lines, int *i, int *rooms);
-void display_tunnels(char **lines, int *i, int *tunnels);
-void display_comments(char **lines, int *i, int *rooms, int *tunnels);
 #endif
