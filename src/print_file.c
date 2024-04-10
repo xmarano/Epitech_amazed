@@ -8,7 +8,7 @@
 #include "amazed.h"
 #include "my.h"
 
-void process_line(char *line, LineProcessing *lp)
+void process_line(char *line, LineProcessing_t *lp)
 {
     if (line[lp->index] == '-') {
         lp->is_second = 1;
@@ -23,7 +23,7 @@ void process_line(char *line, LineProcessing *lp)
 
 void fill_matrix(S_t *s, char *line)
 {
-    LineProcessing lp = {{0}, {0}, 0, 0, 0, 0};
+    LineProcessing_t lp = {{0}, {0}, 0, 0, 0, 0};
 
     while (line[lp.index] != '\n' && line[lp.index] != '\0') {
         process_line(line, &lp);

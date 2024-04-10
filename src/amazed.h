@@ -28,7 +28,7 @@ typedef struct {
     int is_second;
     int room1_index;
     int room2_index;
-} LineProcessing;
+} LineProcessing_t;
 
 void fill_matrix(S_t *s, char *line);
 int get_num_rooms(char *line, S_t *s);
