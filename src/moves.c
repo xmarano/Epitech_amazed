@@ -36,15 +36,15 @@ int dequeue(S_t *s)
     }
 }
 
-void print_path(int parent[], int start, int target)
+void print_path(int parent[], int start, int target, int robot)
 {
     if (start == target) {
-        printf("%d ", start);
+        printf("P%d-%d ", robot, start);
     } else if (parent[target] == -1) {
         printf("No path from %d to %d", start, target);
     } else {
-        print_path(parent, start, parent[target]);
-        printf("%d ", target);
+        print_path(parent, start, parent[target], robot);
+        printf("P%d-%d ", robot, target);
     }
 }
 
@@ -70,14 +70,14 @@ static void verif_bfs(S_t *s, int currentVertex, int *visited, int *parent)
     }
 }
 
-static void process_bfs(S_t *s, int *visited, int *parent)
+static void process_bfs(S_t *s, int *visited, int *parent, int robot)
 {
     int currentVertex;
 
     while (s->front != -1) {
         currentVertex = dequeue(s);
         if (currentVertex == s->end_room) {
-            print_path(parent, s->start_room, s->end_room);
+            print_path(parent, s->start_room, s->end_room, robot);
             return;
         }
         verif_bfs(s, currentVertex, visited, parent);
@@ -96,7 +96,11 @@ void bfs(S_t *s)
     int *visited = malloc(sizeof(int) * s->nb_rooms);
     int *parent = malloc(sizeof(int) * s->nb_rooms);
 
-    init_bfs(s, visited, parent);
-    process_bfs(s, visited, parent);
+    for (int robot = 1; robot <= s->nb_robots; robot++) {
+        init_bfs(s, visited, parent);
+        process_bfs(s, visited, parent, robot);
+        printf("\n");
+    }
+
     free_algo(s, visited, parent);
 }

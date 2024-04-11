@@ -156,7 +156,7 @@ int main(int argc, char **argv)
     display_file(&s, &pars, lines);
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
-    printf("Shortest path : ");
+    my_printf("#moves\n");
     bfs(&s);
     return 0;
 }
