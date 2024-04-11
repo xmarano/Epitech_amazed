@@ -11,6 +11,8 @@ void display_file(S_t *s, pars_t *pars, char **lines)
 {
     display_robots(s, pars);
     while (lines[s->current_line] != NULL) {
+        if (not_display(lines, s) == 84)
+            return;
         display_rooms(lines, s);
         display_tunnels(lines, s);
         s->current_line++;
@@ -49,13 +51,11 @@ int parsing_file(S_t *s, char **lines)
     init_matrix(s);
     while (lines[i] != NULL) {
         verif(s, lines, &i);
-        if (my_strchr(lines[i], '-')) {
+        if (my_strchr(lines[i], '-'))
             fill_matrix(s, lines[i]);
-            i++;
-        } else {
+        else
             s->nb_rooms = get_num_rooms(lines[i], s) + 1;
-            i++;
-        }
+        i++;
     }
     return 0;
 }
@@ -94,6 +94,7 @@ static void init_struct(pars_t *pars, S_t *s)
     pars->end = 0;
     pars->error = 0;
     pars->err_nb_robot = 0;
+    pars->empty_file = 0;
 }
 
 static int parsing_error2(pars_t *pars, char **lines, int i)
@@ -117,22 +118,16 @@ static int parsing_error2(pars_t *pars, char **lines, int i)
     return 0;
 }
 
-static int check_it(pars_t *pars, char **lines)
+int parsing_error(pars_t *pars, char **lines)
 {
     if (lines[0] == NULL) {
-        pars->error++;
+        pars->empty_file++;
         return 0;
     }
     for (int i = 0; lines[0][i] != '\n'; i++) {
         if (lines[0][i] > '9')
             pars->err_nb_robot++;
     }
-    return 0;
-}
-
-int parsing_error(pars_t *pars, char **lines)
-{
-    check_it(pars, lines);
     for (int i = 1; lines[i] != NULL; i++) {
         if (my_strcmp("##start\n", lines[i]) == 0) {
             pars->start++;
@@ -144,8 +139,6 @@ int parsing_error(pars_t *pars, char **lines)
         }
         parsing_error2(pars, lines, i);
     }
-    if (pars->start != 1 || pars->end != 1)
-        pars->error++;
     return 0;
 }
 
@@ -157,11 +150,15 @@ int main(int argc, char **argv)
 
     init_struct(&pars, &s);
     parsing_error(&pars, lines);
+    if (pars.start != 1 || pars.end != 1)
+        pars.error++;
+    if (pars.empty_file != 0)
+        return 84;
     parsing_file(&s, lines);
     display_file(&s, &pars, lines);
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
-    printf("Shortest path : ");
+    my_printf("#moves\n");
     bfs(&s);
     return 0;
 }
