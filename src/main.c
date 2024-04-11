@@ -23,11 +23,9 @@ static void verif(S_t *s, char **lines, int *i)
 {
     if (my_strcmp(lines[*i], "##start\n") == 0) {
         s->start_room = my_atoi(lines[*i + 1]);
-        my_printf("Start node is: %d\n", s->start_room);
         (*i)++;
     } else if (my_strcmp(lines[*i], "##end\n") == 0) {
         s->end_room = my_atoi(lines[*i + 1]);
-        my_printf("End node is: %d\n", s->end_room);
         (*i)++;
     }
 }

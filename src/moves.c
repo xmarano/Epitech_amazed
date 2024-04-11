@@ -10,7 +10,7 @@
 void enqueue(S_t *s, int data)
 {
     if (s->rear == s->nb_rooms - 1)
-        printf("\nQueue is Full!!");
+        my_printf("\nQueue is Full!!");
     else {
         if (s->front == -1)
             s->front = 0;
@@ -24,7 +24,7 @@ int dequeue(S_t *s)
     int data;
 
     if (s->front == -1 || s->front > s->rear) {
-        printf("\nQueue is Empty!!");
+        my_printf("\nQueue is Empty!!");
         return -1;
     } else {
         data = s->queue[s->front];
@@ -39,12 +39,12 @@ int dequeue(S_t *s)
 void print_path(int parent[], int start, int target)
 {
     if (start == target) {
-        printf("%d ", start);
+        my_printf("%d ", start);
     } else if (parent[target] == -1) {
-        printf("No path from %d to %d", start, target);
+        my_printf("No path from %d to %d", start, target);
     } else {
         print_path(parent, start, parent[target]);
-        printf("%d ", target);
+        my_printf("%d ", target);
     }
 }
 
