@@ -7,7 +7,7 @@
 #include "amazed.h"
 #include "my.h"
 
-void enqueue(S_t *s, int data)
+static void enqueue(S_t *s, int data)
 {
     if (s->rear == s->nb_rooms - 1)
         printf("\nQueue is Full!!");
@@ -36,19 +36,34 @@ int dequeue(S_t *s)
     }
 }
 
-void print_path(int parent[], int start, int target, int robot)
+
+void print_path(int parent[], int start, int target, int robot, int level[])
 {
+    static int line = 0;
+
     if (start == target) {
-        printf("P%d-%d ", robot, start);
+        if (start != 0) {
+            printf("P%d-%d ", robot, start);
+            if (level[start] == line) {
+                printf("\n");
+                line++;
+            }
+        }
     } else if (parent[target] == -1) {
         printf("No path from %d to %d", start, target);
     } else {
-        print_path(parent, start, parent[target], robot);
-        printf("P%d-%d ", robot, target);
+        print_path(parent, start, parent[target], robot, level);
+        if (target != 0) {
+            printf("P%d-%d ", robot, target);
+            if (level[target] == line) {
+                printf("\n");
+                line++;
+            }
+        }
     }
 }
 
-void init_bfs(S_t *s, int *visited, int *parent)
+void init_bfs(S_t *s, int *visited, int *parent, int *level)
 {
     s->queue = malloc(sizeof(int) * s->nb_rooms);
     for (int i = 0; i < s->nb_rooms; i++) {
@@ -70,14 +85,14 @@ static void verif_bfs(S_t *s, int currentVertex, int *visited, int *parent)
     }
 }
 
-static void process_bfs(S_t *s, int *visited, int *parent, int robot)
+void process_bfs(S_t *s, int *visited, int *parent, int robot, int *level)
 {
     int currentVertex;
 
     while (s->front != -1) {
         currentVertex = dequeue(s);
         if (currentVertex == s->end_room) {
-            print_path(parent, s->start_room, s->end_room, robot);
+            print_path(parent, s->start_room, s->end_room, robot, level);
             return;
         }
         verif_bfs(s, currentVertex, visited, parent);
@@ -95,12 +110,13 @@ void bfs(S_t *s)
 {
     int *visited = malloc(sizeof(int) * s->nb_rooms);
     int *parent = malloc(sizeof(int) * s->nb_rooms);
+    int *level = malloc(sizeof(int) * s->nb_rooms);
 
     for (int robot = 1; robot <= s->nb_robots; robot++) {
-        init_bfs(s, visited, parent);
-        process_bfs(s, visited, parent, robot);
+        init_bfs(s, visited, parent, level);
+        process_bfs(s, visited, parent, robot, level);
         printf("\n");
     }
-
     free_algo(s, visited, parent);
+    free(level);
 }

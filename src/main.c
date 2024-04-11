@@ -150,8 +150,8 @@ int main(int argc, char **argv)
 
     init_struct(&pars, &s);
     parsing_error(&pars, lines);
-    if (pars->start != 1 || pars->end != 1)
-        pars->error++;
+    if (pars.start != 1 || pars.end != 1)
+        pars.error++;
     if (pars.empty_file != 0)
         return 84;
     parsing_file(&s, lines);
