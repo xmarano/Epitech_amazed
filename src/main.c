@@ -17,28 +17,39 @@ void display_file(S_t *s, pars_t *pars, char **lines)
     }
 }
 
-int parsing_file(S_t *s, char **lines)
+static void verif(S_t *s, char **lines, int *i)
 {
-    int i = 0;
+    if (my_strcmp(lines[*i], "##start\n") == 0) {
+        s->start_room = my_atoi(lines[*i + 1]);
+        my_printf("Start node is: %d\n", s->start_room);
+        (*i)++;
+    } else if (my_strcmp(lines[*i], "##end\n") == 0) {
+        s->end_room = my_atoi(lines[*i + 1]);
+        my_printf("End node is: %d\n", s->end_room);
+        (*i)++;
+    }
+}
 
-    s->nb_robots = my_atoi(lines[i]);
-    i++;
+static void init_matrix(S_t *s)
+{
     s->tab = malloc(sizeof(int *) * 100);
     for (int j = 0; j < 100; j ++) {
         s->tab[j] = malloc(sizeof(int) * 100);
         for (int k = 0; k < 100; k++)
             s->tab[j][k] = 0;
     }
+}
+
+int parsing_file(S_t *s, char **lines)
+{
+    int i = 0;
+
+    s->nb_robots = my_atoi(lines[i]);
+    i++;
+    init_matrix(s);
     while (lines[i] != NULL) {
-        if (my_strcmp(lines[i], "##start\n") == 0) {
-            s->start_room = my_atoi(lines[i+1]);
-            my_printf("Start node is: %d\n", s->start_room);
-            i ++;
-        } else if (my_strcmp(lines[i], "##end\n") == 0) {
-            s->end_room = my_atoi(lines[i+1]);
-            my_printf("End node is: %d\n", s->end_room);
-            i ++;
-        } else if (my_strchr(lines[i], '-')) {
+        verif(s, lines, &i);
+        if (my_strchr(lines[i], '-')) {
             fill_matrix(s, lines[i]);
             i++;
         } else {
@@ -106,7 +117,7 @@ static int parsing_error2(pars_t *pars, char **lines, int i)
     return 0;
 }
 
-int parsing_error(pars_t *pars, char **lines)
+static int check_it(pars_t *pars, char **lines)
 {
     if (lines[0] == NULL) {
         pars->error++;
@@ -116,6 +127,12 @@ int parsing_error(pars_t *pars, char **lines)
         if (lines[0][i] > '9')
             pars->err_nb_robot++;
     }
+    return 0;
+}
+
+int parsing_error(pars_t *pars, char **lines)
+{
+    check_it(pars, lines);
     for (int i = 1; lines[i] != NULL; i++) {
         if (my_strcmp("##start\n", lines[i]) == 0) {
             pars->start++;
@@ -145,6 +162,6 @@ int main(int argc, char **argv)
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
     printf("Shortest path : ");
-    BFS(&s);
+    bfs(&s);
     return 0;
 }

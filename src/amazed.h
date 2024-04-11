@@ -24,7 +24,7 @@ typedef struct S {
     int front;
     int *queue;
 } S_t;
-void BFS(S_t *s);
+void bfs(S_t *s);
 typedef struct pars {
     int start;
     int end;
