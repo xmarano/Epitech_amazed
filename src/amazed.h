@@ -44,6 +44,7 @@ typedef struct {
 } LineProcessing_t;
 
 void bfs(S_t *s);
+int not_display(char **lines, S_t *s);
 void display_robots(S_t *s, pars_t *pars);
 void display_tunnels(char **lines, S_t *s);
 void display_rooms(char **lines, S_t *s);

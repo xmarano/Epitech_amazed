@@ -11,6 +11,8 @@ void display_file(S_t *s, pars_t *pars, char **lines)
 {
     display_robots(s, pars);
     while (lines[s->current_line] != NULL) {
+        if (not_display(lines, s) == 84)
+            return;
         display_rooms(lines, s);
         display_tunnels(lines, s);
         s->current_line++;
@@ -137,8 +139,6 @@ int parsing_error(pars_t *pars, char **lines)
         }
         parsing_error2(pars, lines, i);
     }
-    if (pars->start != 1 || pars->end != 1)
-        pars->error++;
     return 0;
 }
 
@@ -150,13 +150,15 @@ int main(int argc, char **argv)
 
     init_struct(&pars, &s);
     parsing_error(&pars, lines);
+    if (pars->start != 1 || pars->end != 1)
+        pars->error++;
     if (pars.empty_file != 0)
         return 84;
     parsing_file(&s, lines);
     display_file(&s, &pars, lines);
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
-    printf("Shortest path : ");
+    my_printf("#moves\n");
     bfs(&s);
     return 0;
 }
