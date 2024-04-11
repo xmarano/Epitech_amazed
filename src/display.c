@@ -16,28 +16,6 @@ void display_robots(S_t *s, pars_t *pars)
     }
 }
 
-int not_display(char **lines, S_t *s)
-{
-    for (int i = 0; lines[s->current_line][i] != '\n'; i++) {
-        if (lines[s->current_line][i] == 35)
-            continue;
-        if (lines[s->current_line][i] == 45)
-            continue;
-        if (lines[s->current_line][i] == 32)
-            continue;
-        if (lines[s->current_line][i] > 96 && lines[s->current_line][i] < 123)
-            continue;
-        if (lines[s->current_line][i] > 64 && lines[s->current_line][i] < 91)
-            continue;
-        if (lines[s->current_line][i] >= '0'
-        && lines[s->current_line][i] <= '9')
-            continue;
-        my_printf("\x1b[38;5;21m" "toto\n" "\x1b[0m");
-        return 84;
-    }
-    return 0;
-}
-
 void display_numbers(char **lines, S_t *s)
 {
     for (int i = 0; lines[s->current_line][i] != '\n'; i++) {

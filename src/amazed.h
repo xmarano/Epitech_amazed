@@ -7,6 +7,7 @@
 #include "my.h"
 #ifndef AMAZED_H
     #define AMAZED_H
+    #define MAX 100
 
 typedef struct S {
     int tunnel;
@@ -23,7 +24,7 @@ typedef struct S {
     int front;
     int *queue;
 } S_t;
-
+void bfs(S_t *s);
 typedef struct pars {
     int start;
     int end;
@@ -31,7 +32,6 @@ typedef struct pars {
     int tiret;
     int error;
     int err_nb_robot;
-    int empty_file;
 } pars_t;
 
 typedef struct {
@@ -43,8 +43,6 @@ typedef struct {
     int room2_index;
 } LineProcessing_t;
 
-void bfs(S_t *s);
-int not_display(char **lines, S_t *s);
 void display_robots(S_t *s, pars_t *pars);
 void display_tunnels(char **lines, S_t *s);
 void display_rooms(char **lines, S_t *s);
