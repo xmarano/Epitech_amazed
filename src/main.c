@@ -30,11 +30,21 @@ int parsing_file(S_t *s, char **lines)
             s->tab[j][k] = 0;
     }
     while (lines[i] != NULL) {
-        if (my_strchr(lines[i], '-'))
+        if (my_strcmp(lines[i], "##start\n") == 0) {
+            s->start_room = my_atoi(lines[i+1]);
+            my_printf("Start node is: %d\n", s->start_room);
+            i ++;
+        } else if (my_strcmp(lines[i], "##end\n") == 0) {
+            s->end_room = my_atoi(lines[i+1]);
+            my_printf("End node is: %d\n", s->end_room);
+            i ++;
+        } else if (my_strchr(lines[i], '-')) {
             fill_matrix(s, lines[i]);
-        else
-            s->nb_rooms = get_num_rooms(lines[i], s);
-        i++;
+            i++;
+        } else {
+            s->nb_rooms = get_num_rooms(lines[i], s) + 1;
+            i++;
+        }
     }
     return 0;
 }
@@ -60,6 +70,10 @@ char **read_file_to_array(void)
 
 static void init_struct(pars_t *pars, S_t *s)
 {
+    s->front = -1;
+    s->rear = -1;
+    s->start_room = 0;
+    s->end_room = 0;
     s->tunnel = 0;
     s->room = 0;
     s->start = 0;
@@ -130,5 +144,7 @@ int main(int argc, char **argv)
     display_file(&s, &pars, lines);
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
+    printf("Shortest path : ");
+    BFS(&s);
     return 0;
 }

@@ -7,6 +7,7 @@
 #include "my.h"
 #ifndef AMAZED_H
     #define AMAZED_H
+    #define MAX 100
 
 typedef struct S {
     int tunnel;
@@ -17,8 +18,13 @@ typedef struct S {
     int nb_rooms;
     int nb_robots;
     int **tab;
+    int start_room;
+    int end_room;
+    int rear;
+    int front;
+    int *queue;
 } S_t;
-
+void BFS(S_t *s);
 typedef struct pars {
     int start;
     int end;

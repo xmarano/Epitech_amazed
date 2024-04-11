@@ -25,6 +25,7 @@ SRCLIB	=	lib/my_atoi.c 		\
 SRCNAME	=	src/main.c				\
 			src/display.c 	\
 			src/print_file.c	\
+			src/moves.c	\
 
 LIB 	=	libmy.a
 

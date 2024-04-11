@@ -36,12 +36,7 @@ void fill_matrix(S_t *s, char *line)
 int get_num_rooms(char *line, S_t *s)
 {
     static int nb_rooms = 0;
-    static int first_line = 1;
 
-    if (first_line) {
-        first_line = 0;
-        return nb_rooms;
-    }
     if (!my_strrchr(line, '#') && !my_strrchr(line, '-'))
         nb_rooms ++;
     return nb_rooms;
