@@ -13,7 +13,8 @@ void display_file(S_t *s, pars_t *pars, char **lines)
     while (lines[s->current_line] != NULL) {
         if (not_display(lines, s) == 84)
             return;
-        if (s->start == 1 && my_strcmp(lines[s->current_line], "##start\n") == 0)
+        if (s->start == 1 &&
+        my_strcmp(lines[s->current_line], "##start\n") == 0)
             return;
         if (s->end == 1 && my_strcmp(lines[s->current_line], "##end\n") == 0)
             return;
