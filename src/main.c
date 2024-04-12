@@ -157,6 +157,5 @@ int main(int argc, char **argv)
     if (pars.error + pars.err_nb_robot != 0)
         return 84;
     my_printf("#moves\n");
-    bfs(&s);
     return 0;
 }
