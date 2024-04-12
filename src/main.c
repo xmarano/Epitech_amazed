@@ -51,15 +51,6 @@ int parsing_file(S_t *s, char **lines)
 
     s->nb_robots = my_atoi(lines[i]);
     i++;
-    //init_matrix(s);
-    //while (lines[i] != NULL) {
-    //    verif(s, lines, &i);
-    //    if (my_strchr(lines[i], '-'))
-    //        fill_matrix(s, lines[i]);
-    //    else
-    //        s->nb_rooms = get_num_rooms(lines[i], s) + 1;
-    //    i++;
-    //}
     return 0;
 }
 
