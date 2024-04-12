@@ -48,12 +48,12 @@ void display_numbers(char **lines, S_t *s)
 
 void display_rooms(char **lines, S_t *s)
 {
-    if (my_strchr(lines[s->current_line], '-') != NULL)
-        return;
     if (s->room == 0) {
         my_printf("#rooms\n");
         s->room = 1;
     }
+    if (my_strchr(lines[s->current_line], '-') != NULL)
+        return;
     if (s->start == 0 && my_strcmp(lines[s->current_line], "##start\n") == 0) {
         my_printf("##start\n");
         s->start = 1;
